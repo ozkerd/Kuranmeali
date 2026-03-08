@@ -458,8 +458,10 @@ input[type=range]::-webkit-slider-thumb:hover {
     }
 
     .header {
+        position: relative;
+        /* Removes sticky behavior on mobile so verses can be read full-screen */
         padding: var(--spacing-sm) 0;
-        margin-bottom: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
         gap: var(--spacing-sm);
     }
 
@@ -469,7 +471,8 @@ input[type=range]::-webkit-slider-thumb:hover {
     }
 
     .subtitle {
-        font-size: 0.8rem;
+        display: none;
+        /* Hide subtitle to save space */
     }
 
     .chapter-dropdown {
