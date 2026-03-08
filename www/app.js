@@ -15,7 +15,8 @@ const state = {
     reciterId: 7, // Default: Mishary
     language: 'tr', // Default: Turkish
     currentPage: 1,
-    bookmarks: JSON.parse(localStorage.getItem('quran_bookmarks')) || []
+    bookmarks: JSON.parse(localStorage.getItem('quran_bookmarks')) || [],
+    wordTranslationCache: JSON.parse(localStorage.getItem('quran_word_dict')) || {}
 };
 
 // --- Localization Dictionary ---
@@ -249,8 +250,28 @@ function renderVerses() {
         verse.words.forEach((wordElement) => {
             if (wordElement.char_type_name === 'word') {
                 let arabicText = wordElement.text_uthmani || wordElement.text;
+                let translationText = wordElement.translation ? wordElement.translation.text : '';
 
-                const translationText = wordElement.translation ? wordElement.translation.text : '';
+                // Fix Quran.com API Fallback Bug: Build a local dictionary to auto-fill missing Turkish words
+                if (state.language === 'tr' && wordElement.translation) {
+                    const cleanArabic = arabicText.replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E8\u06EA-\u06ED]/g, ''); // Strip vowels for better matching
+
+                    if (wordElement.translation.language_name === 'turkish') {
+                        // Save to our local dictionary for future use
+                        state.wordTranslationCache[cleanArabic] = translationText;
+                        localStorage.setItem('quran_word_dict', JSON.stringify(state.wordTranslationCache));
+                    } else if (wordElement.translation.language_name === 'english') {
+                        // The API failed to find a Turkish translation and returned English
+                        // Let's check our local dictionary first!
+                        if (state.wordTranslationCache[cleanArabic]) {
+                            translationText = state.wordTranslationCache[cleanArabic];
+                        } else {
+                            // If we genuinely don't know it, leave it blank instead of mixing English into Turkish
+                            translationText = "";
+                        }
+                    }
+                }
+
                 const wordId = `word-${wordElement.id}`;
 
                 // Hayrat (İndo-Pak) Hattında Lafzatullah'ı (Allah/Rab isimlerini) Kırmızı Yapma Mantığı
