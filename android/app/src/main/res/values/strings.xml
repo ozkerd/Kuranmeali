@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Quran Cevirmeni</string>
+    <string name="title_activity_main">Quran Cevirmeni</string>
+    <string name="package_name">com.oz.qurancevirmeni</string>
+    <string name="custom_url_scheme">com.oz.qurancevirmeni</string>
+</resources>

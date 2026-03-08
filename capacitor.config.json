@@ -1,0 +1,6 @@
+{
+  "appId": "com.oz.qurancevirmeni",
+  "appName": "Quran Cevirmeni",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

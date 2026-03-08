@@ -1,0 +1,558 @@
+/* ==========================================================================
+   CSS Variables & Theming
+   ========================================================================== */
+:root {
+    /* Color Palette - Premium Dark Mode */
+    --bg-primary: #0f172a;
+    /* Deep slate */
+    --bg-secondary: #1e293b;
+    /* Slightly lighter slate */
+    --bg-tertiary: #334155;
+    /* Accent slate */
+
+    --text-primary: #f8fafc;
+    /* Off-white */
+    --text-secondary: #cbd5e1;
+    /* Light gray */
+    --text-muted: #94a3b8;
+    /* Muted gray */
+
+    --accent-color: #38bdf8;
+    /* Light sky blue */
+    --accent-glow: rgba(56, 189, 248, 0.2);
+
+    --highlight-bg: rgba(56, 189, 248, 0.15);
+    /* Soft highlight for active word */
+    --highlight-border: #38bdf8;
+
+    /* Typography */
+    --font-arabic: 'Amiri', serif;
+    --font-ui: 'Inter', sans-serif;
+
+    /* Spacing & Layout */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 20px;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+}
+
+/* ==========================================================================
+   Base Styles & Reset
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-ui);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+/* Animated Aura Background */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+    animation: aura 20s infinite ease-in-out alternate;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes aura {
+    0% {
+        transform: scale(1) translate(0, 0);
+    }
+
+    100% {
+        transform: scale(1.1) translate(-2%, 5%);
+    }
+}
+
+.app-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+    padding-bottom: 100px;
+    /* Space for fixed header/player if needed */
+}
+
+/* ==========================================================================
+   Header & Player Controls
+   ========================================================================== */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: var(--spacing-md) 0;
+    margin-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--bg-tertiary);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.blur-background {
+    background-color: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.header-content {
+    text-align: center;
+}
+
+.header-content h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+/* Chapter Selector */
+.chapter-dropdown {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.75rem;
+    font-weight: 700;
+    font-family: var(--font-ui);
+    margin-bottom: var(--spacing-xs);
+    letter-spacing: -0.5px;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    appearance: none;
+    -webkit-appearance: none;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    transition: var(--transition-fast);
+}
+
+.chapter-dropdown:hover,
+.chapter-dropdown:focus {
+    color: var(--accent-color);
+    text-shadow: 0 0 15px var(--accent-glow);
+}
+
+.chapter-dropdown option {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+/* Speed Selector */
+.speed-dropdown {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    transition: var(--transition-fast);
+}
+
+.speed-dropdown:hover,
+.speed-dropdown:focus {
+    background: var(--accent-color);
+    color: var(--bg-primary);
+}
+
+/* Player Controls */
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    background: var(--bg-secondary);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ctrl-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+}
+
+.main-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
+    font-size: 1.2rem;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.main-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.main-btn:active {
+    transform: scale(0.95);
+}
+
+/* Action Bar Buttons */
+.action-btn {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+}
+
+.action-btn:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.action-btn.active {
+    background: var(--accent-color);
+    color: var(--bg-primary);
+    border-color: var(--accent-light);
+}
+
+.progress-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Custom Range Input */
+input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+    cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    margin-top: -5px;
+    box-shadow: 0 0 10px var(--accent-glow);
+    transition: var(--transition-fast);
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* ==========================================================================
+   Verses Area
+   ========================================================================== */
+.verses-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+/* Individual Verse Block */
+.verse-block {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.verse-block:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Top bar with Verse Number */
+.verse-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.verse-badge {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* Arabic Text Area */
+.arabic-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    /* Right to Left flow */
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    justify-content: flex-start;
+}
+
+/* Word Pair (Arabic + Translation) */
+.word-pair {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    transition: var(--transition-fast);
+    cursor: pointer;
+    min-width: 60px;
+    border-bottom: 2px solid transparent;
+}
+
+.word-pair:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Active Highlight Style */
+.word-pair.active {
+    background-color: var(--highlight-bg);
+    border-bottom: 2px solid var(--highlight-border);
+}
+
+.arabic-word {
+    font-family: var(--font-arabic);
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin-bottom: 4px;
+    direction: rtl;
+}
+
+.font-uthmani {
+    font-family: var(--font-arabic), Arial, 'Segoe UI', Tahoma, sans-serif;
+}
+
+.font-indopak {
+    font-family: 'Lateef', 'Amiri', Arial, 'Segoe UI', Tahoma, sans-serif;
+    font-size: 3.2rem;
+    /* Lateef standard is slightly smaller visually, increasing size */
+    font-weight: 500;
+}
+
+.word-pair.active .arabic-word {
+    color: var(--accent-color);
+    text-shadow: 0 0 15px var(--accent-glow);
+}
+
+.translation-word {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.word-pair.active .translation-word {
+    color: var(--text-primary);
+    /* Retain original font-weight so it doesn't cause word expansion and layout shifts */
+}
+
+/* Full Verse Translation */
+.verse-translation {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    border-left: 3px solid var(--accent-color);
+    padding-left: var(--spacing-md);
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   Utilities & Animations
+   ========================================================================== */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl);
+    color: var(--text-muted);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--accent-color);
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: var(--spacing-md);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .arabic-word {
+        font-size: 2rem;
+    }
+
+    .font-indopak {
+        font-size: 2.6rem;
+    }
+
+    .app-container {
+        padding: var(--spacing-sm);
+    }
+
+    .verse-block {
+        padding: var(--spacing-md);
+    }
+
+    .header-content h1,
+    .chapter-dropdown {
+        font-size: 1.4rem;
+    }
+}
+
+/* Kırmızı (Lafza-i Celal / Rab) Rengi - Sadece İndo-Pak hattında aktif edeceğiz */
+.lafzatullah {
+    color: #ef4444 !important;
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.3) !important;
+}
+
+/* Modals */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.modal.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    width: 90%;
+    max-width: 500px;
+    padding: var(--spacing-lg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+.modal.hidden .modal-content {
+    transform: translateY(30px);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--spacing-xs);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: var(--text-primary);
+}
+
+.bookmark-icon {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: var(--transition-fast);
+    padding: 5px;
+}
+
+.bookmark-icon.bookmarked {
+    color: #f59e0b;
+    /* Amber/Gold */
+}
+
+.bookmark-icon:hover {
+    transform: scale(1.1);
+}
