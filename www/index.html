@@ -13,7 +13,7 @@
         rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=4">
 </head>
 
 <body>
@@ -70,6 +70,10 @@
 
             <!-- Audio Player Controls -->
             <div class="player-controls">
+                <button id="mute-btn" class="ctrl-btn" aria-label="Mute/Unmute"
+                    style="font-size: 1.2rem; margin-right: 5px; color: var(--text-secondary);">
+                    <i class="fas fa-volume-up"></i>
+                </button>
                 <button id="play-pause-btn" class="ctrl-btn main-btn" aria-label="Play/Pause">
                     <i class="fas fa-play"></i>
                 </button>
@@ -146,7 +150,7 @@
         </div>
     </div>
 
-    <script src="app.js?v=3"></script>
+    <script src="app.js?v=4"></script>
 </body>
 
 </html>

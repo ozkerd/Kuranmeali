@@ -37,6 +37,7 @@ const DOM = {
     versesContainer: document.getElementById('verses-container'),
     audioEl: document.getElementById('quran-audio'),
     playPauseBtn: document.getElementById('play-pause-btn'),
+    muteBtn: document.getElementById('mute-btn'),
     playIcon: document.querySelector('#play-pause-btn i'),
     progressBar: document.getElementById('progress-bar'),
     currentTimeDisplay: document.getElementById('current-time'),
@@ -48,6 +49,7 @@ const DOM = {
     pageSelect: document.getElementById('page-select'),
     pageBadge: document.getElementById('current-page-badge'),
     subtitle: document.querySelector('.subtitle'),
+    header: document.querySelector('.header'),
 
     // Action Bar & Modals
     btnSearch: document.getElementById('btn-search'),
@@ -448,6 +450,28 @@ function setupEventListeners() {
     window.addEventListener('click', (e) => {
         if (e.target === DOM.searchModal) DOM.searchModal.classList.add('hidden');
         if (e.target === DOM.bookmarksModal) DOM.bookmarksModal.classList.add('hidden');
+    });
+
+    // Mute button functionality
+    DOM.muteBtn.addEventListener('click', () => {
+        DOM.audioEl.muted = !DOM.audioEl.muted;
+        const icon = DOM.muteBtn.querySelector('i');
+        if (DOM.audioEl.muted) {
+            icon.className = 'fas fa-volume-mute';
+            DOM.muteBtn.style.color = 'var(--accent-color)';
+        } else {
+            icon.className = 'fas fa-volume-up';
+            DOM.muteBtn.style.color = 'var(--text-secondary)';
+        }
+    });
+
+    // Sticky header minimal scroll effect
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            DOM.header.classList.add('minimal');
+        } else {
+            DOM.header.classList.remove('minimal');
+        }
     });
 }
 

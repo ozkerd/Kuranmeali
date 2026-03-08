@@ -458,18 +458,43 @@ input[type=range]::-webkit-slider-thumb:hover {
     }
 
     .header {
+        position: sticky;
+        top: 0;
         padding: var(--spacing-sm) 0;
-        margin-bottom: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
         gap: var(--spacing-sm);
+        transition: all 0.3s ease;
+    }
+
+    .header.minimal {
+        padding: var(--spacing-xs) 0;
+        gap: 5px;
+        background: rgba(15, 23, 42, 0.98);
+        border-bottom: 1px solid var(--accent-glow);
+    }
+
+    .header.minimal #lang-select,
+    .header.minimal .subtitle,
+    .header.minimal #reciter-select,
+    .header.minimal #font-select,
+    .header.minimal #speed-select,
+    .header.minimal #btn-bookmarks,
+    .header.minimal #btn-download,
+    .header.minimal #current-page-badge {
+        display: none !important;
+    }
+
+    .header.minimal .chapter-dropdown {
+        font-size: 1.1rem;
+    }
+
+    .header.minimal .action-bar {
+        margin-top: 0 !important;
     }
 
     .header-content h1 {
         font-size: 1.25rem;
         margin-bottom: 0;
-    }
-
-    .subtitle {
-        font-size: 0.8rem;
     }
 
     .chapter-dropdown {
