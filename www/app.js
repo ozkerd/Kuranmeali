@@ -531,8 +531,8 @@ function syncHighlight(currentTime) {
                 if (isAbove || isBelow) {
                     // It's off screen, gently scroll the parent verse into view
                     if (parentVerse) {
-                        // Fallback scroll behavior that works across mobile smoothly
-                        const y = parentVerse.getBoundingClientRect().top + window.scrollY - headerOffset - 20;
+                        // Scroll to center the active word smoothly
+                        const y = pair.getBoundingClientRect().top + window.scrollY - (window.innerHeight / 2);
                         window.scrollTo({ top: y, behavior: 'smooth' });
                     } else {
                         pair.scrollIntoView({ behavior: "smooth", block: "center" });
