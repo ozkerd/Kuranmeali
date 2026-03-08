@@ -521,11 +521,22 @@ function syncHighlight(currentTime) {
 
                 // Smooth scroll logic: scroll to center if not visible
                 const rect = pair.getBoundingClientRect();
-                const diffY = rect.top - (window.innerHeight / 2);
+                const parentVerse = pair.closest('.verse-block');
 
-                // if the word is way off screen, scroll to it slowly
-                if (Math.abs(diffY) > 200) {
-                    pair.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+                // Calculate if element is outside comfortable viewing area
+                const headerOffset = 150; // Approximated sticky header size
+                const isAbove = rect.top < headerOffset;
+                const isBelow = rect.bottom > (window.innerHeight - 50);
+
+                if (isAbove || isBelow) {
+                    // It's off screen, gently scroll the parent verse into view
+                    if (parentVerse) {
+                        // Fallback scroll behavior that works across mobile smoothly
+                        const y = parentVerse.getBoundingClientRect().top + window.scrollY - headerOffset - 20;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                    } else {
+                        pair.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
                 }
             }
             activeFound = true;
@@ -630,19 +641,33 @@ window.goToVerseAndPlay = async function (verseKey) {
     if (DOM.searchModal) DOM.searchModal.classList.add('hidden');
 
     const chapterId = parseInt(verseKey.split(':')[0]);
+    const verseNum = parseInt(verseKey.split(':')[1]);
+
+    if (state.isPlaying) {
+        if (window.stopAudioLoop) window.stopAudioLoop();
+        DOM.audioEl.pause();
+        state.isPlaying = false;
+        updatePlayBtnUI();
+    }
+
     if (state.chapterId !== chapterId) {
-        if (state.isPlaying) {
-            if (window.stopAudioLoop) window.stopAudioLoop();
-            DOM.audioEl.pause();
-            state.isPlaying = false;
-            updatePlayBtnUI();
-        }
         state.chapterId = chapterId;
         DOM.chapterSelect.value = chapterId.toString();
-        // Clear old verses to avoid jumping, show loading
         DOM.versesContainer.innerHTML = `<div class="loading-state"><div class="spinner"></div><p>${UILocales[state.language].loading}</p></div>`;
         await fetchChapterData(state.chapterId);
-        renderVerses();
+    }
+
+    // Auto-discover which page the verse is on. We must find it in the data.
+    let targetPage = state.currentPage;
+    const verseData = state.rawVerses.find(v => v.verse_key === verseKey);
+    if (verseData && verseData.page_number) {
+        targetPage = verseData.page_number;
+    }
+
+    if (state.currentPage !== targetPage || !document.getElementById(`verse-${verseKey}`)) {
+        await loadPageAndPlay(targetPage, false); // load without auto-playing from page start
+    } else {
+        renderVerses(); // just re-render to ensure clean state
     }
 
     setTimeout(() => {
