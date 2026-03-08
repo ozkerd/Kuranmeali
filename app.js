@@ -151,7 +151,8 @@ async function fetchChaptersList() {
 // --- Data Fetching ---
 async function fetchChapterData(chapterId) {
     const transId = translationIds[state.language] || 77;
-    const versesApi = `https://api.quran.com/api/v4/verses/by_chapter/${chapterId}?language=${state.language}&words=true&word_translation_language=${state.language}&translations=${transId}&fields=text_uthmani&word_fields=text_uthmani,text_indopak&per_page=50`;
+    // Fix: per_page=300 ensures we load all verses of even the longest chapter (Al-Baqarah, 286 verses)
+    const versesApi = `https://api.quran.com/api/v4/verses/by_chapter/${chapterId}?language=${state.language}&words=true&word_translation_language=${state.language}&translations=${transId}&fields=text_uthmani&word_fields=text_uthmani,text_indopak&per_page=300`;
 
     // 3. Fetch precise Word Timestamps & Audio URL (QDC API)
     const audioAndTimestampApi = `https://api.quran.com/api/qdc/audio/reciters/${state.reciterId}/audio_files?chapter=${chapterId}&segments=true`;
