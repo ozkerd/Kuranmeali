@@ -452,6 +452,58 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 /* Responsive */
 @media (max-width: 600px) {
+    .app-container {
+        padding: var(--spacing-sm);
+        padding-bottom: 80px;
+    }
+
+    .header {
+        padding: var(--spacing-sm) 0;
+        margin-bottom: var(--spacing-md);
+        gap: var(--spacing-sm);
+    }
+
+    .header-content h1 {
+        font-size: 1.25rem;
+        margin-bottom: 0;
+    }
+
+    .subtitle {
+        font-size: 0.8rem;
+    }
+
+    .chapter-dropdown {
+        font-size: 1.3rem;
+    }
+
+    .player-controls {
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+        border-radius: var(--border-radius-sm);
+    }
+
+    .main-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+
+    .action-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+
+    .progress-container {
+        font-size: 0.75rem;
+        gap: 4px;
+    }
+
+    .verse-block {
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius-md);
+    }
+
     .arabic-word {
         font-size: 2rem;
     }
@@ -460,17 +512,13 @@ input[type=range]::-webkit-slider-thumb:hover {
         font-size: 2.6rem;
     }
 
-    .app-container {
-        padding: var(--spacing-sm);
+    .translation-word {
+        font-size: 0.8rem;
     }
 
-    .verse-block {
-        padding: var(--spacing-md);
-    }
-
-    .header-content h1,
-    .chapter-dropdown {
-        font-size: 1.4rem;
+    .verse-badge {
+        font-size: 0.75rem;
+        padding: 2px 6px;
     }
 }
 
