@@ -574,7 +574,7 @@ function formatTime(seconds) {
 }
 
 // --- Page Loading System ---
-async function loadPageAndPlay(pageNumber) {
+async function loadPageAndPlay(pageNumber, autoScroll = true) {
     if (state.isPlaying) togglePlay();
     DOM.versesContainer.innerHTML = `
         <div class="loading-state">
@@ -601,13 +601,15 @@ async function loadPageAndPlay(pageNumber) {
             await fetchChapterData(state.chapterId);
             renderVerses();
 
-            // Auto-scroll to that exact verse indicating the page start
-            setTimeout(() => {
-                const targetVerseEl = document.getElementById(`verse-${firstVerseKey}`);
-                if (targetVerseEl) {
-                    targetVerseEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 300);
+            if (autoScroll) {
+                // Auto-scroll to that exact verse indicating the page start
+                setTimeout(() => {
+                    const targetVerseEl = document.getElementById(`verse-${firstVerseKey}`);
+                    if (targetVerseEl) {
+                        targetVerseEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 300);
+            }
         }
     } catch (e) {
         console.error(e);
@@ -708,6 +710,7 @@ window.goToVerseAndPlay = async function (verseKey) {
     setTimeout(() => {
         const target = document.getElementById(`verse-${verseKey}`);
         if (target) {
+            // Scroll specifically to the target result
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             // Highlight it briefly
             target.style.transition = "background-color 0.5s ease";
@@ -740,14 +743,18 @@ window.goToVerseAndPlay = async function (verseKey) {
                     if (DOM.audioEl.readyState >= 1) {
                         playLogic();
                     } else {
-                        // Wait until audio metadata (like duration/seekability) is loaded
-                        DOM.audioEl.addEventListener('loadedmetadata', playLogic, { once: true });
+                        // Wait for metadata to load if not ready
+                        DOM.audioEl.addEventListener('loadedmetadata', function onLoadedMeta() {
+                            playLogic();
+                            DOM.audioEl.removeEventListener('loadedmetadata', onLoadedMeta);
+                        });
                     }
                 }
             }
         }
-    }, 800);
+    }, 400); // 400ms delay to ensure rendering and avoid scroll races
 };
+
 
 // --- Search System ---
 async function performSearch() {
