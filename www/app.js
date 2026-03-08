@@ -657,11 +657,25 @@ window.goToVerseAndPlay = async function (verseKey) {
         await fetchChapterData(state.chapterId);
     }
 
-    // Auto-discover which page the verse is on. We must find it in the data.
+    // Auto-discover which page the verse is on.
     let targetPage = state.currentPage;
-    const verseData = state.rawVerses.find(v => v.verse_key === verseKey);
-    if (verseData && verseData.page_number) {
-        targetPage = verseData.page_number;
+    const memoryVerse = state.versesData ? state.versesData.find(v => v.verse_key === verseKey) : null;
+
+    if (memoryVerse && memoryVerse.page_number) {
+        targetPage = memoryVerse.page_number;
+    } else {
+        // If verse is not loaded in memory (e.g., from a global search), query the API for its page
+        try {
+            const pageRes = await fetch(`https://api.quran.com/api/v4/verses/by_key/${verseKey}`);
+            if (pageRes.ok) {
+                const pageData = await pageRes.json();
+                if (pageData.verse && pageData.verse.page_number) {
+                    targetPage = pageData.verse.page_number;
+                }
+            }
+        } catch (err) {
+            console.error("Could not fetch target page for the verse:", err);
+        }
     }
 
     if (state.currentPage !== targetPage || !document.getElementById(`verse-${verseKey}`)) {
