@@ -450,8 +450,8 @@ input[type=range]::-webkit-slider-thumb:hover {
     }
 }
 
-/* Responsive */
-@media (max-width: 600px) {
+/* Responsive - Mobile Portrait & Landscape */
+@media (max-width: 900px) {
     .app-container {
         padding: var(--spacing-sm);
         padding-bottom: 80px;
@@ -628,4 +628,35 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .bookmark-icon:hover {
     transform: scale(1.1);
+}
+
+/* Super Short Screens (Landscape Mode) */
+@media (max-height: 500px) {
+    .header {
+        position: sticky;
+        top: 0;
+        padding: var(--spacing-xs) 0;
+        gap: 5px;
+        background: rgba(15, 23, 42, 0.98);
+        border-bottom: 1px solid var(--accent-glow);
+    }
+
+    .header #lang-select,
+    .header .subtitle,
+    .header #reciter-select,
+    .header #font-select,
+    .header #speed-select,
+    .header #btn-bookmarks,
+    .header #btn-download,
+    .header #current-page-badge {
+        display: none !important;
+    }
+
+    .header .chapter-dropdown {
+        font-size: 1.1rem;
+    }
+
+    .header .action-bar {
+        margin-top: 0 !important;
+    }
 }
